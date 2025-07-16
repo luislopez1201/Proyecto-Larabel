@@ -74,6 +74,9 @@ Route::middleware('auth:sanctum')->post('/checkout', [VentaController::class, 'c
 Route::post('/detalle-ventas', [DetalleVentaController::class, 'store']);
 Route::post('/ventas', [VentaController::class, 'store']);
 
+Route::middleware('auth:sanctum')->get('/compras', [VentaController::class, 'getComprasUsuario']);
+
+Route::middleware('auth:sanctum')->get('/admin/ventas', [VentaController::class, 'getAllVentasAdmin']);
 // O protegida solo para admins:
 Route::middleware('auth:sanctum')->get('/products', [ProductController::class, 'index']);
 

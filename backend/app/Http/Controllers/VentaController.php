@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Venta;
 use App\Models\DetalleVenta;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -79,6 +80,7 @@ class VentaController extends Controller
                 DetalleVenta::create([
                     'venta_id' => $venta->id,
                     'product_id' => $item['id'],
+                    'product_name' => $item['name'],
                     'cantidad' => $item['quantity'],
                     'precio' => $item['price'],
                     'subtotal' => $item['price'] * $item['quantity'],
@@ -99,6 +101,65 @@ class VentaController extends Controller
                 'message' => '❌ Error al procesar la compra.',
                 'error' => $e->getMessage(),
             ], 500);
-            }
+        }
+    }
+
+    public function getComprasUsuario()
+    {
+        try {
+            $user = Auth::user();
+
+            $ventas = Venta::where('user_id', $user->id)
+                ->with('detalles.producto') // carga detalles y producto en cada detalle
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            $response = $ventas->map(function ($venta) {
+                return [
+                    'id' => $venta->id,
+                    'fecha' => $venta->created_at ? $venta->created_at->toDateTimeString() : null,
+                    'total' => $venta->total,
+                    'items' => $venta->detalles->map(function ($detalle) {
+                        return [
+                            'id' => $detalle->producto ? $detalle->producto->id : null,
+                            'name' => $detalle->product_name ?? 'Producto no disponible',
+                            'quantity' => $detalle->cantidad,
+                            'price' => $detalle->precio
+                        ];
+                    })
+                ];
+            });
+
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return response()->json(['error' => 'Error al obtener las compras del usuario'], 500);
+        }
+    }
+
+    public function getAllVentasAdmin()
+    {
+        $ventas = Venta::with(['detalles.producto', 'usuario']) // Cargar productos y usuario que hizo la compra
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $response = $ventas->map(function ($venta) {
+            return [
+                'id' => $venta->id,
+                'fecha' => $venta->created_at ? $venta->created_at->toDateTimeString() : null,
+                'total' => $venta->total,
+                'user_name' => $venta->usuario->name ?? 'Desconocido', // Ajusta según tu columna de nombre
+                'items' => $venta->detalles->map(function ($detalle) {
+                    return [
+                        'id' => $detalle->producto ? $detalle->producto->id : null,
+                        'name' => $detalle->producto->name ?? 'Producto no disponible',
+                        'quantity' => $detalle->cantidad,
+                        'price' => $detalle->precio
+                    ];
+                })
+            ];
+        });
+
+        return response()->json($response);
     }
 }
