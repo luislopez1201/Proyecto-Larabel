@@ -1,0 +1,36 @@
+
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: licoreria
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admin_2025
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+      build: ./backend
+      volumes:
+        - ./backend:/var/www
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
+
+  frontend:
+      build: ./frontend
+      container_name: frontend
+      ports:
+        - "5173:5173"
+      volumes:
+        - ./frontend:/app
+        - /app/node_modules
+      environment:
+        - NODE_ENV=development
+
+volumes:
+  postgres_data:
