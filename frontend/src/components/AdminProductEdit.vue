@@ -15,7 +15,7 @@
         <button @click="goTo('products')" class="text-gray-700 hover:text-indigo-600">Productos</button>
         <button @click="goTo('sales')" class="text-gray-700 hover:text-indigo-600">Ventas</button>
         <button @click="goTo('clients')" class="text-gray-700 hover:text-indigo-600">Clientes</button>
-        <button @click="goTo('settings')" class="text-gray-700 hover:text-indigo-600">Configuración</button>
+        <button @click="goTo('buys')" class="text-gray-700 hover:text-indigo-600 transition-colors">Compras</button>
       </div>
 
       <div class="flex items-center space-x-4">
@@ -204,11 +204,11 @@ const deleteImage = async () => {
   }
 }
 
-const getProductImageUrl = (imagePath) => {
-  if (!imagePath) {
-    return 'https://via.placeholder.com/200x200.png?text=Sin+Imagen'
+const getProductImageUrl = (imageName) => {
+  if (!imageName) {
+    return 'https://via.placeholder.com/100x100.png?text=Sin+Imagen'
   }
-  return `http://localhost:8000/storage/${imagePath}`
+  return `http://localhost:8000/storage/${imageName}`
 }
 
 const goBack = () => {
@@ -220,7 +220,7 @@ const goTo = (section) => {
     products: '/admin-product',
     sales: '/admin/sales',
     clients: '/admin/clients',
-    settings: '/admin/settings',
+    buys: '/admin/buys',
   }
   if (routes[section]) {
     router.push(routes[section])

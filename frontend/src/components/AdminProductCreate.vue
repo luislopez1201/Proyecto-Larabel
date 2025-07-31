@@ -15,7 +15,7 @@
         <button @click="goTo('products')" class="text-gray-700 hover:text-indigo-600 transition-colors">Productos</button>
         <button @click="goTo('sales')" class="text-gray-700 hover:text-indigo-600 transition-colors">Ventas</button>
         <button @click="goTo('clients')" class="text-gray-700 hover:text-indigo-600 transition-colors">Clientes</button>
-        <button @click="goTo('settings')" class="text-gray-700 hover:text-indigo-600 transition-colors">Configuración</button>
+        <button @click="goTo('buys')" class="text-gray-700 hover:text-indigo-600 transition-colors">Compras</button>
       </div>
 
       <div class="flex items-center space-x-4">
@@ -114,7 +114,7 @@ const goTo = (section) => {
     products: '/admin-product',
     sales: '/admin/sales',
     clients: '/admin/clients',
-    settings: '/admin/settings',
+    buys: '/admin/buys',
   }
   if (routes[section]) {
     router.push(routes[section])

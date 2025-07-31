@@ -133,7 +133,7 @@ const fetchProducts = async () => {
 
 const getProductImageUrl = (imageName) => {
   if (!imageName) {
-    return 'https://via.placeholder.com/300x300.png?text=Sin+Imagen'
+    return 'https://via.placeholder.com/100x100.png?text=Sin+Imagen'
   }
   return `http://localhost:8000/storage/${imageName}`
 }

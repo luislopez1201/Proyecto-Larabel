@@ -7,6 +7,8 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DetalleVentaController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PurchaseController;
 
 Route::post('/register', function (Request $request) {
     $request->validate([
@@ -80,3 +82,11 @@ Route::middleware('auth:sanctum')->get('/admin/ventas', [VentaController::class,
 // O protegida solo para admins:
 Route::middleware('auth:sanctum')->get('/products', [ProductController::class, 'index']);
 
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
+Route::put('/users/{id}', [UserController::class, 'update']);
+
+Route::get('/providers', [PurchaseController::class, 'getProviders']);
+Route::get('/products', [PurchaseController::class, 'getProducts']);
+Route::post('/purchases', [PurchaseController::class, 'store']);

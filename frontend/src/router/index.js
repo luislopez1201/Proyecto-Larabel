@@ -24,7 +24,24 @@ const routes = [
     component: AdminProduct,
     meta: { requiresAuth: true, role: 'admin' },
   },
-
+  {
+    path: '/admin/clients',
+    name: 'AdminClients',
+    component: () => import('../components/AdminUsers.vue'),
+    meta: { requiresAuth: true, role: 'admin' },
+  },
+  /*{
+    path: '/admin/buys',
+    name: 'AdminCreatePurchase',
+    component: () => import('../components/AdminCreatePurchase.vue'),
+    meta: { requiresAuth: true, role: 'admin' },
+  },*/
+  {
+    path: '/admin/edit-clients/:id',
+    name: 'EditClients',
+    component: () => import('../components/AdminEditUser.vue'),
+    props: true,
+  },
   // Gestión de Productos Administrador
   {
     path: '/admin/create-product',
