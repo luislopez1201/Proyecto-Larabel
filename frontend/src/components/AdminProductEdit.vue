@@ -208,7 +208,7 @@ const getProductImageUrl = (imageName) => {
   if (!imageName) {
     return 'https://via.placeholder.com/100x100.png?text=Sin+Imagen'
   }
-  return `http://localhost:8000/storage/${imageName}`
+  return `http://localhost:8080/storage/${imageName}`
 }
 
 const goBack = () => {
